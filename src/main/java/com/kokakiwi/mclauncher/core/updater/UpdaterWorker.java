@@ -88,8 +88,11 @@ public class UpdaterWorker
             // Load native URL
             dest = new File(dest, "natives");
             {
+            	String os = SystemUtils.getSystemOS().name();
+            	if(os.equals("macosx")) os = "macos";
+            	
                 final URL url = new URL(api.getConfig().getString(
-                        "updater.natives." + SystemUtils.getSystemOS().name()));
+                        "updater.natives." + os));
                 type = Type.NATIVE;
                 final GameFile file = new GameFile(url, dest, type);
                 api.getUpdater().getGameFiles().add(file);

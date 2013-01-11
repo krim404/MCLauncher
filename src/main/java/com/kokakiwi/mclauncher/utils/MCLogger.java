@@ -181,7 +181,7 @@ public class MCLogger
             for (int i = str.length() - 2; i < str.length(); i++)
             {
                 final char c = str.charAt(i);
-                s += Character.getName(c);
+                s += c;
             }
             
             return s;

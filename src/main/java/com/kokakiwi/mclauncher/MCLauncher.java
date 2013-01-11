@@ -16,6 +16,7 @@ import com.kokakiwi.mclauncher.ui.LauncherFrame;
 import com.kokakiwi.mclauncher.ui.simple.SimpleTheme;
 import com.kokakiwi.mclauncher.utils.Configuration;
 import com.kokakiwi.mclauncher.utils.MCLogger;
+import com.kokakiwi.mclauncher.utils.lang.Translater;
 
 public class MCLauncher
 {
@@ -55,7 +56,7 @@ public class MCLauncher
     private void init(String[] args)
     {
         config = Configuration.getLauncherConfiguration();
-        
+        Translater.setLang(config.getString("window.lang"));
         timeLine = new TimeLine(this);
         loginer = new Loginer(this);
         updater = new Updater(this);

@@ -36,9 +36,9 @@ public class ModsDialog extends JDialog
     
     private JPanel                            actionPanel;
     
-    private JList<Mod>                        modsList;
+    private JList                        modsList;
     
-    private DefaultListModel<ModsManager.Mod> model;
+    private DefaultListModel model;
     
     public ModsDialog(OptionsDialog parent)
     {
@@ -79,13 +79,13 @@ public class ModsDialog extends JDialog
         panel.add(actionPanel, BorderLayout.SOUTH);
         
         final ModsManager mods = parent.getApi().getLauncher().getMods();
-        model = new DefaultListModel<ModsManager.Mod>();
+        model = new DefaultListModel();
         for (ModsManager.Mod mod : mods.getMods())
         {
             model.addElement(mod);
         }
         
-        modsList = new JList<ModsManager.Mod>(model);
+        modsList = new JList(model);
         modsList.setAutoscrolls(true);
         modsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
@@ -131,7 +131,7 @@ public class ModsDialog extends JDialog
                 
                 if (modsList.getSelectedValue() != null)
                 {
-                    ModsManager.Mod selected = modsList.getSelectedValue();
+                    ModsManager.Mod selected = (Mod) modsList.getSelectedValue();
                     model.removeElement(selected);
                     mods.getMods().remove(selected);
                 }
@@ -173,7 +173,7 @@ public class ModsDialog extends JDialog
         JPanel right = new JPanel();
         right.setLayout(new GridLayout(0, 1, 5, 5));
         
-        ModsManager.Mod mod = modsList.getSelectedValue();
+        ModsManager.Mod mod = (Mod) modsList.getSelectedValue();
         if (mod != null)
         {
             fillEditModForm(left, right, mod);

@@ -13,7 +13,7 @@ public class Translater
     
     static
     {
-        setLang("fr_FR");
+        setLang("en_US");
     }
     
     public static String getString(String name, String[]... keys)

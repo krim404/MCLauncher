@@ -255,22 +255,32 @@ public class LzmaAlone
                 final SevenZip.Compression.LZMA.Encoder encoder = new SevenZip.Compression.LZMA.Encoder();
                 if (!encoder.SetAlgorithm(params.Algorithm))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect compression mode");
                 }
                 if (!encoder.SetDictionarySize(params.DictionarySize))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect dictionary size");
                 }
                 if (!encoder.SetNumFastBytes(params.Fb))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect -fb value");
                 }
                 if (!encoder.SetMatchFinder(params.MatchFinder))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect -mf value");
                 }
                 if (!encoder.SetLcLpPb(params.Lc, params.Lp, params.Pb))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect -lc or -lp or -pb value");
                 }
                 encoder.SetEndMarkerMode(eos);
@@ -296,11 +306,15 @@ public class LzmaAlone
                 final byte[] properties = new byte[propertiesSize];
                 if (inStream.read(properties, 0, propertiesSize) != propertiesSize)
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("input .lzma file is too short");
                 }
                 final SevenZip.Compression.LZMA.Decoder decoder = new SevenZip.Compression.LZMA.Decoder();
                 if (!decoder.SetDecoderProperties(properties))
                 {
+                	inStream.close();
+                	outStream.close();
                     throw new Exception("Incorrect stream properties");
                 }
                 long outSize = 0;
@@ -309,6 +323,8 @@ public class LzmaAlone
                     final int v = inStream.read();
                     if (v < 0)
                     {
+                    	inStream.close();
+                    	outStream.close();
                         throw new Exception("Can't read stream size");
                     }
                     outSize |= (long) v << 8 * i;
