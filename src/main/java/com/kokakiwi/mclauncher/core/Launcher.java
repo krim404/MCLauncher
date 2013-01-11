@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.kokakiwi.mclauncher.MCLauncher;
 import com.kokakiwi.mclauncher.core.launcher.LauncherApplet;
-import com.kokakiwi.mclauncher.core.launcher.ModsManager;
 import com.kokakiwi.mclauncher.core.launcher.Wrapper;
 import com.kokakiwi.mclauncher.core.updater.UpdaterWorker;
 import com.kokakiwi.mclauncher.core.updater.UpdaterWorker.Type;
@@ -17,22 +16,18 @@ import com.kokakiwi.mclauncher.core.updater.UpdaterWorker.Type;
 public class Launcher implements Runnable
 {
     private final MCLauncher  main;
-    private final ModsManager mods;
     private URLClassLoader    classLoader;
     private LauncherApplet    applet;
     
     public Launcher(MCLauncher main)
     {
         this.main = main;
-        mods = new ModsManager();
     }
     
     public void launch()
     {
         // Load URLs
         final List<URL> urls = new ArrayList<URL>();
-        
-        mods.fill(urls);
         
         File natives = new File(main.getApi().getMinecraftDirectory(), "bin/");
         for (final UpdaterWorker.GameFile gameFile : main.getUpdater()
@@ -98,10 +93,5 @@ public class Launcher implements Runnable
     public URLClassLoader getClassLoader()
     {
         return classLoader;
-    }
-    
-    public ModsManager getMods()
-    {
-        return mods;
     }
 }

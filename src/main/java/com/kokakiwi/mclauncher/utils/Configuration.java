@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -304,40 +303,9 @@ public class Configuration
     {
         final Configuration config = new Configuration();
         
-        // Load JavaConfig class.
-        try
-        {
-            Class<?> clazz = configClass;
-            if (clazz == null)
-            {
-                clazz = Configuration.class.getClassLoader().loadClass(
-                        "com.kokakiwi.mclauncher.core.JavaConfig");
-            }
-            final Method method = clazz.getMethod("config");
-            final Configuration javaConfig = (Configuration) method
-                    .invoke(null);
-            
-            if (javaConfig.getBoolean("load.user-config"))
-            {
-                config.load(Configuration.class
-                        .getResourceAsStream("/config/default.yml"), "yaml");
-            }
-            
-            config.load(javaConfig);
-        }
-        catch (final Exception e)
-        {
-            config.load(Configuration.class
-                    .getResourceAsStream("/config/default.yml"), "yaml");
-        }
+        config.load(Configuration.class
+                .getResourceAsStream("/config/default.yml"), "yaml");
         
         return config;
-    }
-    
-    private static Class<?> configClass = null;
-    
-    public static void setConfigClass(Class<?> configClass)
-    {
-        Configuration.configClass = configClass;
     }
 }

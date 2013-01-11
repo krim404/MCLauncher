@@ -57,6 +57,7 @@ public class MCLauncher
     {
         config = Configuration.getLauncherConfiguration();
         Translater.setLang(config.getString("window.lang"));
+        
         timeLine = new TimeLine(this);
         loginer = new Loginer(this);
         updater = new Updater(this);
@@ -72,6 +73,24 @@ public class MCLauncher
         loginer.init();
         
         parseArguments(args);
+    }
+    
+    public void reload()
+    {
+    	frame.setVisible(false);
+    	timeLine = new TimeLine(this);
+        loginer = new Loginer(this);
+        updater = new Updater(this);
+        launcher = new Launcher(this);
+        
+        api = new LauncherAPI(this);
+        frame = new LauncherFrame(this);
+        
+        loadTheme();
+        
+        timeLine.init();
+        frame.init();
+        loginer.init();
     }
     
     @SuppressWarnings("unchecked")

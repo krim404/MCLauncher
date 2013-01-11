@@ -4,7 +4,7 @@ window:
   theme: com.kokakiwi.mclauncher.ui.simple.SimpleTheme                                          # Theme du launcher, si non indique, il utilise SimpleTheme
   lang: en_US
 news:
-  url: 'http://mcupdate.tumblr.com/'                                                            # URL de la page des news (Si utilise)
+  url: 'http://www.google.de'                                                            # URL de la page des news (Si utilise)
 game:
   folder:
     customFolder: false                                                                         # Utiliser le gameDir a la place du dossier user
@@ -29,8 +29,6 @@ updater:
     macos: 'http://s3.amazonaws.com/MinecraftDownload/macosx_natives.jar.lzma'
     solaris: 'http://s3.amazonaws.com/MinecraftDownload/solaris_natives.jar.lzma'
   additionnals:
-    []
-  deleteOnUpdate:
     []
   versions:
   - name: 'official'

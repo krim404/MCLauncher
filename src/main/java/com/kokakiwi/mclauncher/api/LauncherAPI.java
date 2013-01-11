@@ -100,7 +100,7 @@ public class LauncherAPI
     {
         File dir = null;
         File root = new File(System.getProperty("user.home", ".") + "/");
-        final String appName = main.getConfig().getString(
+        final String appName = "bdh2/"+main.getConfig().getString(
                 "game.folder.folderName");
         
         if (main.getConfig().getBoolean("game.folder.customFolder"))

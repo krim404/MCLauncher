@@ -124,6 +124,21 @@ public class OptionsDialog extends JDialog
                 + " :"));
         fieldPanel.add(offlineModeToggle);
         
+        labelPanel.add(new JLabel(Translater.getString("options.games")
+                + " :"));
+        
+        final JButton manageButton = new JButton(
+                Translater.getString("options.manage"));
+        
+        manageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                new GameDialog(api).setVisible(true);
+            }
+        });
+        fieldPanel.add(manageButton);
+        
+        
         // GAME LOCATION
         final TransparentLabel dirLink = new TransparentLabel(api
                 .getMinecraftDirectory().toString()) {

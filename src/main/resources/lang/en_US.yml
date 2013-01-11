@@ -9,12 +9,16 @@ login:
   loginning: 'Login...'
 news:
   defaultText: 'Loading...'
+game:
+  windowTitle: 'Game options'
 options:
   windowTitle: 'Launcher options'
   forceUpdateFalse: 'Force update'
   forceUpdateTrue: 'Will force!'
   offlineMode: 'Offline Mode'
   onlineMode: 'Online Mode'
+  games: 'Games'
+  manage: 'Manage'
   mods:
     title: 'Mods'
   gameLocationLabel: 'Game location on disk'

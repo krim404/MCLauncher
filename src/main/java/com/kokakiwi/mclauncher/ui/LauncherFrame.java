@@ -50,7 +50,6 @@ public class LauncherFrame extends Frame
         setLayout(new BorderLayout());
         
         reset();
-        
         pack();
         setLocationRelativeTo(null);
     }

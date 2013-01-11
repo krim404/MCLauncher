@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -37,7 +38,8 @@ public class SimpleLoginPage implements Page
                                                       SwingConstants.CENTER);
     
     private final JPanel           loginBox   = new TransparentPanel();
-    
+    public LogoPanel lp;
+    public JComboBox			   mode 	  = new JComboBox();
     private final JTextField       userName   = new JTextField(20);
     private final JPasswordField   password   = new JPasswordField(20);
     private final JCheckBox        rememberMe = new TransparentCheckbox(
@@ -109,7 +111,11 @@ public class SimpleLoginPage implements Page
         panel.setLayout(new BorderLayout());
         panel.setPreferredSize(new Dimension(100, 100));
         
-        panel.add(new LogoPanel(), "West");
+        final TransparentPanel titles = new TransparentPanel();
+        lp = new LogoPanel("/res/no_image.png");
+        titles.add(lp,"West");
+        titles.add(mode, "West");
+        panel.add(titles,"West");
         panel.add(statusText, "Center");
         
         buildLoginBox(false);

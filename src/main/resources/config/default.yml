@@ -2,7 +2,7 @@ window:
   title: 'Minecraft'                                                                            # Titre de la fenetre du launcher.
   icon: 'res/favicon.png'                                                                       # Icone de la fenetre du launcher.
   theme: com.kokakiwi.mclauncher.ui.simple.SimpleTheme                                          # Theme du launcher, si non indique, il utilise SimpleTheme
-  lang: fr_FR
+  lang: en_US
 news:
   url: 'http://mcupdate.tumblr.com/'                                                            # URL de la page des news (Si utilise)
 game:
@@ -29,6 +29,8 @@ updater:
     macos: 'http://s3.amazonaws.com/MinecraftDownload/macosx_natives.jar.lzma'
     solaris: 'http://s3.amazonaws.com/MinecraftDownload/solaris_natives.jar.lzma'
   additionnals:
+    []
+  deleteOnUpdate:
     []
   versions:
   - name: 'official'

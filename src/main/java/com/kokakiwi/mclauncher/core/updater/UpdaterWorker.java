@@ -99,7 +99,7 @@ public class UpdaterWorker
             }
             
             // Load additionnals URLs
-            dest = new File(api.getMinecraftDirectory(), "bin");
+            dest = new File(api.getMinecraftDirectory(), "");
             type = Type.ADDITIONNAL;
             for (final String additionnalFile : api.getConfig().getStringList(
                     "updater.additionnals"))
@@ -109,11 +109,35 @@ public class UpdaterWorker
                 final GameFile file = new GameFile(url, dest, type);
                 api.getUpdater().getGameFiles().add(file);
             }
+            
+            
+            for (final String delete : api.getConfig().getStringList(
+                    "updater.deleteOnUpdate"))
+            {
+            	System.out.println("Update Delete: "+delete);
+            	dest = new File(api.getMinecraftDirectory(), delete);
+            	deleteDir(dest);
+            }
         }
         catch (final Exception e)
         {
             e.printStackTrace();
         }
+    }
+    
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
     }
     
     public static class GameFile
