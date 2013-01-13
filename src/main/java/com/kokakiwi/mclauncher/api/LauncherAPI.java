@@ -97,23 +97,12 @@ public class LauncherAPI
     
     // Utils
     
-    public File getMinecraftDirectory()
+    public File getLauncherDirectory()
     {
         File dir = null;
         File root = new File(System.getProperty("user.home", ".") + "/");
-        final String appName = "bdh2/"+main.getConfig().getString(
-                "game.folder.folderName");
+        final String appName = "bdh2/";
         
-        if (main.getConfig().getBoolean("game.folder.customFolder"))
-        {
-            String customFolder = main.getConfig().getString("game.folder.gameDir");
-            if (customFolder != null)
-            {
-                customFolder = customFolder.replace("{ROOT}",
-                        SystemUtils.getExecDirectoryPath());
-                root = new File(customFolder).getAbsoluteFile();
-            }
-        }
         
         switch (SystemUtils.getSystemOS())
         {
@@ -142,6 +131,32 @@ public class LauncherAPI
                 dir = new File(root, appName + '/');
                 break;
         }
+        
+        if (dir != null && !dir.exists() && !new File(dir, "bin").mkdirs())
+        {
+            throw new RuntimeException(
+                    "The working directory could not be created: " + dir);
+        }
+        
+        return dir;
+    }
+    
+    public File getMinecraftDirectory()
+    {
+        File root = this.getLauncherDirectory();
+        if (main.getConfig().getBoolean("game.folder.customFolder"))
+        {
+            String customFolder = main.getConfig().getString("game.folder.gameDir");
+            if (customFolder != null)
+            {
+                customFolder = customFolder.replace("{ROOT}",
+                        SystemUtils.getExecDirectoryPath());
+                root = new File(customFolder).getAbsoluteFile();
+            }
+        }
+        
+        File dir = new File(root,main.getConfig().getString(
+                "game.folder.folderName"));
         
         if (dir != null && !dir.exists() && !new File(dir, "bin").mkdirs())
         {

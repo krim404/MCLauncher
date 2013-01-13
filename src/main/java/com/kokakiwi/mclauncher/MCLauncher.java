@@ -3,7 +3,6 @@ package com.kokakiwi.mclauncher;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import com.kokakiwi.mclauncher.api.LauncherAPI;
@@ -15,7 +14,6 @@ import com.kokakiwi.mclauncher.core.Updater;
 import com.kokakiwi.mclauncher.core.launcher.LauncherApplet;
 import com.kokakiwi.mclauncher.ui.LauncherFrame;
 import com.kokakiwi.mclauncher.ui.simple.SimpleTheme;
-import com.kokakiwi.mclauncher.ui.simple.UpdateDialog;
 import com.kokakiwi.mclauncher.utils.ConfigList;
 import com.kokakiwi.mclauncher.utils.Configuration;
 import com.kokakiwi.mclauncher.utils.MCLogger;
@@ -79,10 +77,6 @@ public class MCLauncher
         loginer.init();
         
         parseArguments(args);
-        
-        //UpdateDialog d = new UpdateDialog(api, "System", 5);
-        //d.setVisible(true);
-        //JOptionPane.showMessageDialog(frame, "");
     }
     
     public void setConfig(Configuration c)
@@ -99,7 +93,9 @@ public class MCLauncher
         launcher = new Launcher(this);
         
         api = new LauncherAPI(this);
-        cl = new ConfigList(api);
+        
+        if(cl != null)
+        	cl.reloadConfigs();
         
         frame = new LauncherFrame(this);
         
