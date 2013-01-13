@@ -59,11 +59,17 @@ public class Translater
     
     public static void setLang(String lang)
     {
-        Translater.lang = lang;
-        main.clear();
-        main.load(
-                Translater.class.getResourceAsStream("/lang/" + Translater.lang
-                        + ".yml"), "yaml");
+    	try
+    	{
+	        Translater.lang = lang;
+	        main.clear();
+	        main.load(
+	                Translater.class.getResourceAsStream("/lang/" + Translater.lang
+	                        + ".yml"), "yaml");
+    	} catch (Exception e)
+    	{
+    		setLang("en_US");
+    	}
     }
     
     public static void set(String name, Object value)
