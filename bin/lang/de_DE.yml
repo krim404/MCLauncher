@@ -1,0 +1,47 @@
+login:
+  rememberBox: 'Passwort merken'
+  loginButton: 'Login'
+  retryButton: 'Nochmal?'
+  optionsButton: 'Optionen'
+  offlineButton: 'Offline mode'
+  usernameLabel: 'Benutzername'
+  passwordLabel: 'Passwort'
+  loginning: 'Login...'
+news:
+  defaultText: 'Lade...'
+game:
+  windowTitle: 'Spiel Optionen'
+options:
+  windowTitle: 'Launcher Optionen'
+  forceUpdateFalse: 'Repariere Installation'
+  forceUpdateTrue: 'Wird repariert!'
+  offlineMode: 'Offline Modus'
+  onlineMode: 'Online Modus'
+  games: 'Spiele'
+  manage: 'Verwalten'
+  mods:
+    title: 'Mods'
+  gameLocationLabel: 'Verzeichnis auf der Festplatte'
+  done: 'Fertig'
+updater:
+  title: 'Aktualisiere {GAMENAME}...'
+  newUpdateAvailable: 'Ein neues Update ist verfuegbar'
+  askUpdate: 'Willst du Updaten?'
+  states:
+    INIT: 'Initialisiere Loader'
+    DETERMINING_PACKAGES: 'Suche Pakete zum Downloaden'
+    CHECKING_CACHE: 'Pruefe existierende Daten'
+    DOWNLOADING: 'Lage Pakete herunter'
+    EXTRACTING_PACKAGES: 'Extrahiere'
+    UPDATING_CLASSPATH: 'Aktualisiere Klassenpfad'
+    SWITCHING_APPLET: 'Wechsel Applet'
+    INITIALIZE_REAL_APPLET: 'Initialisiere Applet'
+    START_REAL_APPLET: 'Starte Applet'
+    DONE: 'Ladevorgang abgeschlossen'
+  retrieving: "Empfange"
+  extracting: "Entpacke"
+  extractTo: "nach"
+global:
+  yesStr: 'Ja'
+  noStr: 'Nein'
+  cancel: 'Abbruch'

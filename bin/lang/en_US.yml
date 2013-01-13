@@ -13,7 +13,7 @@ game:
   windowTitle: 'Game options'
 options:
   windowTitle: 'Launcher options'
-  forceUpdateFalse: 'Force update'
+  forceUpdateFalse: 'Force repair'
   forceUpdateTrue: 'Will force!'
   offlineMode: 'Offline Mode'
   onlineMode: 'Online Mode'

@@ -14,14 +14,14 @@ public class ConfigList
 	HashMap<String,Configuration> cfgs = new HashMap<String,Configuration>();
 	String profilesParentDir;
   	
-	public ConfigList(LauncherAPI api)
+	public ConfigList(LauncherAPI api, boolean b)
 	{
 		this.api = api;
 		this.profilesParentDir = api.getLauncherDirectory().toString()+"/";
 		this.updateConfigs();
-		this.reloadConfigs();
+		this.reloadConfigs(b);
 	}
-	
+
 	public void updateConfigs()
 	{
 		final File profilesDir = new File(profilesParentDir + "profiles/");
@@ -39,7 +39,11 @@ public class ConfigList
             if (profileDir.isDirectory())
             {
             	int v = this.getLocalVersion(dir);
-            	if(v < this.getVersion(dir))
+            	if(v == 0)
+            	{
+            		//Ignore
+            	}
+            	else if(v < this.getVersion(dir))
             	{
             		MCLogger.debug("New Profile Version found for: "+dir);
             		upd.add(dir);
@@ -80,9 +84,7 @@ public class ConfigList
 	        }
 	        
 	        d.setCurr("Done");
-	        api.getMain().reload();
         }
-        
 	}
 	
 	//Abfrage gegen Master nach ID, anlegen des Ordners und speichern der Config File. Danach reload
@@ -99,8 +101,14 @@ public class ConfigList
 		try {
 			String yml = api.executePost("http://update.brautec.de/profiles.php?dl=true&game="+id, "", "",true).replaceAll("[^\\x00-\\x7F]", "");
 			String v = api.executePost("http://update.brautec.de/profiles.php?game="+id, "", "",false);
-			api.writeFile(version,v);
-	        api.writeFile(file,yml);
+			if(v != "")
+			{
+				api.writeFile(version,v);
+		        api.writeFile(file,yml);
+			} else
+			{
+				path.delete();
+			}
 		} catch (Exception e) {
 			MCLogger.debug("Unable to save profile file: "+id);
 		}
@@ -119,7 +127,6 @@ public class ConfigList
 	    		curVersion = readVersion(versionFile);
 	    	} 
     	} catch (Exception e) {
-    		System.out.println(e);
 		}
     	
     	return curVersion;
@@ -127,20 +134,24 @@ public class ConfigList
 	
 	public int getVersion(String game)
 	{
-		if(this.noask == true) return 0;
+		if(this.noask == true) return 1;
     	int ProfileVersion = 0;
     	
     	try {
-    		ProfileVersion = Integer.parseInt(api.executePost("http://update.brautec.de/profiles.php?game="+game, "", "",false));
+    		String str = api.executePost("http://update.brautec.de/profiles.php?game="+game, "", "",false);
+    		if(str != "")
+    		{
+    			ProfileVersion = Integer.parseInt(str);
+    		}
     	} catch (Exception e) {
-    		MCLogger.debug("Error on Request of: "+"http://update.brautec.de/profiles.php?game="+game);
+    		MCLogger.debug("Error on Request of: "+game);
     		this.noask = true;
 		}
     	return ProfileVersion;
 	}
 	
 	
-	public void reloadConfigs()
+	public void reloadConfigs(boolean msg)
 	{
 		this.cfgs = new HashMap<String,Configuration>();
 		this.cfgs.put("default", Configuration.getLauncherConfiguration());
@@ -150,9 +161,11 @@ public class ConfigList
         for (final String dir : profDir)
         {
             final File profileDir = new File(profilesDir, dir);
-            if (profileDir.isDirectory())
+            if (profileDir.isDirectory() && getLocalVersion(dir) != 0)
             {
-            	MCLogger.debug("Found profile with ID '" + dir + "'");
+            	if(msg == true)
+            		MCLogger.debug("Found profile with ID '" + dir + "'");
+            	
                 final File descriptorFile = new File(profileDir, "profile.yml");
                 if (descriptorFile.exists())
                 {
@@ -173,11 +186,14 @@ public class ConfigList
 	public boolean loadConfig(File f)
 	{
 		Configuration c = new Configuration();
-		if(c.load(f))
-		{	
-			this.cfgs.put(c.getString("game.id").toLowerCase(),c);
-			return true;
-		} else return false;
+		try
+		{
+			if(c != null && c.load(f) == true)
+			{	
+				this.cfgs.put(c.getString("game.id").toLowerCase(),c);
+				return true;
+			} else return false;
+		} catch(Exception e) { return false; }
 	}
 
 	
@@ -194,6 +210,7 @@ public class ConfigList
     public Integer readVersion(File file) throws Exception
     {
     	String str = api.readFile(file);
+    	if(str == "") return 0;
         return Integer.parseInt(str);
     }
 }

@@ -43,12 +43,10 @@ public class SimpleLoginPage implements Page
     
     private final JPanel           loginBox   = new TransparentPanel();
     public LogoPanel lp;
-    public JComboBox			   mode 	  = new JComboBox();
+    public JComboBox			   mode;
     private final JTextField       userName   = new JTextField(20);
     private final JPasswordField   password   = new JPasswordField(20);
-    private final JCheckBox        rememberMe = new TransparentCheckbox(
-                                                      Translater
-                                                              .getString("login.rememberBox"));
+    private final JCheckBox        rememberMe = new TransparentCheckbox("");
     
     public SimpleLoginPage()
     {
@@ -81,7 +79,7 @@ public class SimpleLoginPage implements Page
         
         userName.setText(api.getConfig().getString("username", ""));
         password.setText(api.getConfig().getString("password", ""));
-        
+        rememberMe.setText(Translater.getString("login.rememberBox"));
         if (api.getLoginer().getStoredUsername() != null)
         {
             userName.setText(api.getLoginer().getStoredUsername());
@@ -129,15 +127,21 @@ public class SimpleLoginPage implements Page
         }
         else
         	lp = new LogoPanel("/res/no_image.png");
-        titles.add(lp,"West");
-        titles.add(mode, "West");
         
+        mode = new JComboBox();
+        int i = 0;
         for(Entry<String, Configuration> l : api.getConfigList().getConfigs().entrySet())
-        {
+        {	
         	mode.addItem(l.getKey());
+        	if(l.getKey().equalsIgnoreCase(api.getConfig().getString("game.id")))
+        		mode.setSelectedIndex(i);
+        	++i;
         }
         
         mode.addActionListener(new SwitchGame(this,api));
+        
+        titles.add(lp,"West");
+        titles.add(mode, "West");
         
         panel.add(titles,"West");
         panel.add(statusText, "Center");

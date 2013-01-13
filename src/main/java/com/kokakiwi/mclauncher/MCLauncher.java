@@ -62,8 +62,8 @@ public class MCLauncher
         Translater.setLang(config.getString("window.lang"));
         
         api = new LauncherAPI(this); 
-        cl = new ConfigList(api);
-        
+        cl = new ConfigList(api,false);
+        timeLine = new TimeLine(this);
 
         //Try loading mod-list
         
@@ -97,41 +97,38 @@ public class MCLauncher
 		
         
         //Load last selected mod
-        String last = "Default";
+        String last = "default";
         File f = new File(api.getLauncherDirectory().toString()+"/last");
-        if(!f.exists())
-        {
-        	try 
-        	{
-        		this.setLastMod("Default");
+    	try 
+    	{
+    		if(!f.exists())
+    		{
+	    		this.setLastMod("Default");
 				api.writeFile(f, "Default");
-				last = api.readFile(f);
-			} catch (Exception e) {
-				MCLogger.debug("Unable to load last mod file");
-			}
-        }
-        
+    		}
+			last = api.readFile(f);
+		} catch (Exception e) {
+			MCLogger.debug("Unable to load last mod file");
+		}
         Configuration c = cl.getConfig(last);
 		if(c != null)
 			this.setConfig(c);
 		
         this.reload();
+        timeLine.init();
         parseArguments(args);
     }
     
     public void setLastMod(String s)
     {
     	File f = new File(api.getLauncherDirectory().toString()+"/last");
-    	if(!f.exists())
-        {
-    		try 
-        	{
-		    	f.createNewFile();
-				api.writeFile(f, s);
-        	} catch (Exception e) {
-				MCLogger.debug("Unable to create last mod file");
-			}
-        }
+    	try 
+    	{
+	    	f.createNewFile();
+			api.writeFile(f, s);
+    	} catch (Exception e) {
+			MCLogger.debug("Unable to create last mod file");
+		}
     }
 
     public void setConfig(Configuration c)
@@ -141,8 +138,10 @@ public class MCLauncher
     
     public void reload()
     {
+    	
     	Translater.setLang(config.getString("window.lang"));
-    	timeLine = new TimeLine(this);
+    	System.out.println("Select Language: "+config.getString("window.lang"));
+    	
         loginer = new Loginer(this);
         updater = new Updater(this);
         launcher = new Launcher(this);
@@ -150,14 +149,18 @@ public class MCLauncher
         api = new LauncherAPI(this);
         
         if(cl != null)
-        	cl.reloadConfigs();
+        	cl.reloadConfigs(true);
         
-        frame = new LauncherFrame(this);
-        
-        loadTheme();
-        
-        timeLine.init();
-        frame.init();
+        if(frame == null)
+        {
+        	frame = new LauncherFrame(this);
+        	loadTheme();
+            frame.init();
+        } else
+        {
+        	timeLine.reload();
+        }
+         
         loginer.init();
     }
     

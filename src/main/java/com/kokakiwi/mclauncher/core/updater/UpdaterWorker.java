@@ -28,6 +28,14 @@ public class UpdaterWorker
             }
         }
         
+        for (final String delete : api.getConfig().getStringList(
+                "updater.deleteOnUpdate"))
+        {
+        	System.out.println("Update Delete: "+delete);
+        	File dest = new File(api.getMinecraftDirectory(), delete);
+        	deleteDir(dest);
+        }
+        
         // Downloading packages
         api.getUpdater().setState(State.DOWNLOADING);
         api.getUpdater().setPercentage(10);
@@ -108,15 +116,6 @@ public class UpdaterWorker
                 
                 final GameFile file = new GameFile(url, dest, type);
                 api.getUpdater().getGameFiles().add(file);
-            }
-            
-            
-            for (final String delete : api.getConfig().getStringList(
-                    "updater.deleteOnUpdate"))
-            {
-            	System.out.println("Update Delete: "+delete);
-            	dest = new File(api.getMinecraftDirectory(), delete);
-            	deleteDir(dest);
             }
         }
         catch (final Exception e)

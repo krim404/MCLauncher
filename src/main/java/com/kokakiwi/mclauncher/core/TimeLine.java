@@ -34,19 +34,24 @@ public class TimeLine
     
     // Main section
     
+    public void reload()
+    {
+    	main.getFrame().removeAll();
+        main.getFrame().reset();
+        
+        final Page page = getCurrentPage();
+        page.fill(main.getFrame().getMainPanel(), main.getApi());
+        
+        main.getFrame().validate();
+    }
+    
     public void next()
     {
         currentPage++;
         
         if (currentPage < pages.size())
         {
-            main.getFrame().removeAll();
-            main.getFrame().reset();
-            
-            final Page page = getCurrentPage();
-            page.fill(main.getFrame().getMainPanel(), main.getApi());
-            
-            main.getFrame().validate();
+            this.reload();
         }
         else
         {
