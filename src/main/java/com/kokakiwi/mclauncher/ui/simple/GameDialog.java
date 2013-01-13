@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -44,7 +45,7 @@ public class GameDialog extends JDialog
         
         mode = new JList();
         mode.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        mode.setBorder(new LineBorder(new Color(0, 0, 0)));
+        mode.setBorder(new LineBorder(new Color(0, 0, 0),2,true));
         mode.setBounds(10, 11, 275, 146);
         refreshList();
         
@@ -62,6 +63,7 @@ public class GameDialog extends JDialog
         final JPanel labelPanel = new JPanel(new GridLayout(0, 1));
         final JPanel fieldPanel = new JPanel(new GridLayout(0, 1));
         optionsPanel.add(labelPanel, "West");
+        labelPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
         optionsPanel.add(fieldPanel, "Center");
         
        
@@ -91,14 +93,36 @@ public class GameDialog extends JDialog
         add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                //TODO add
+            	String str = JOptionPane.showInputDialog(panel, Translater.getString("game.addgame"), "brautec", JOptionPane.OK_CANCEL_OPTION);
+                if(str.length() > 0)
+                {
+                	if(api.getConfigList().registerConfig(str))
+                	{
+                		JOptionPane.showMessageDialog(panel,Translater.getString("global.success"));
+                	} else
+                		JOptionPane.showMessageDialog(panel,Translater.getString("global.fail"));
+                	api.getMain().reload();
+                }
             }
         });
         
         rem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                //TODO rem
+            	if(mode.getSelectedValue() != null)
+            	{
+            		String str = mode.getSelectedValue().toString();
+            		int res = JOptionPane.showConfirmDialog(panel, Translater.getString("game.delete"));
+            		if(res == JOptionPane.OK_OPTION)
+            		{
+            			if(api.deleteGame(str) && api.getConfigList().deleteConfig(str))
+            				JOptionPane.showMessageDialog(panel,Translater.getString("global.success"));
+            			else
+            				JOptionPane.showMessageDialog(panel,Translater.getString("global.fail"));
+            			
+            			api.getMain().reload();
+            		}
+            	}
             }
         });
         fieldPanel.add(add);

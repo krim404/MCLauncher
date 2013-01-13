@@ -88,8 +88,10 @@ public class ConfigList
 	}
 	
 	//Abfrage gegen Master nach ID, anlegen des Ordners und speichern der Config File. Danach reload
-	public void registerConfig(String id)
+	public boolean registerConfig(String id)
 	{
+		if(id.length() < 2) return false;
+		
 		final File path = new File(profilesParentDir
                 + "profiles/"+id);
 		final File file = new File(profilesParentDir
@@ -101,17 +103,28 @@ public class ConfigList
 		try {
 			String yml = api.executePost("http://update.brautec.de/profiles.php?dl=true&game="+id, "", "",true).replaceAll("[^\\x00-\\x7F]", "");
 			String v = api.executePost("http://update.brautec.de/profiles.php?game="+id, "", "",false);
-			if(v != "")
+			if(v.length() > 0 && yml.length() > 10)
 			{
 				api.writeFile(version,v);
 		        api.writeFile(file,yml);
+		        return true;
 			} else
 			{
-				path.delete();
+				//nix
 			}
 		} catch (Exception e) {
 			MCLogger.debug("Unable to save profile file: "+id);
 		}
+		return false;
+	}
+	
+	public boolean deleteConfig(String id)
+	{
+		if(id.length() < 2) return false;
+		
+		final File path = new File(profilesParentDir
+                + "profiles/"+id);
+		return api.deleteDir(path);
 	}
 	
 	public int getLocalVersion(String game)

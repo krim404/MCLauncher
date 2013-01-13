@@ -148,12 +148,43 @@ public class LauncherAPI
         return dir;
     }
     
+    public boolean deleteGame(String name)
+    {
+    	Configuration c = this.getConfigList().getConfig(name);
+    	if(c != null)
+    	{
+	    	File a = this.getMinecraftDirectory(c);
+	    	return this.deleteDir(a);
+    	} 
+    	return false;
+    }
+    
+    public boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+    
     public File getMinecraftDirectory()
     {
+    	return this.getMinecraftDirectory(main.getConfig());
+    }
+    
+    public File getMinecraftDirectory(Configuration c)
+    {
         File root = this.getLauncherDirectory();
-        if (main.getConfig().getBoolean("game.folder.customFolder"))
+        if (c.getBoolean("game.folder.customFolder"))
         {
-            String customFolder = main.getConfig().getString("game.folder.gameDir");
+            String customFolder = c.getString("game.folder.gameDir");
             if (customFolder != null)
             {
                 customFolder = customFolder.replace("{ROOT}",
@@ -162,7 +193,7 @@ public class LauncherAPI
             }
         }
         
-        File dir = new File(root,main.getConfig().getString(
+        File dir = new File(root,c.getString(
                 "game.folder.folderName"));
         
         if (dir != null && !dir.exists() && !new File(dir, "bin").mkdirs())

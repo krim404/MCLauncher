@@ -11,6 +11,8 @@ news:
   defaultText: 'Lade...'
 game:
   windowTitle: 'Spiel Optionen'
+  addgame: 'Bitte Spielnamen eingeben'
+  delete: 'Wollen Sie das Spiel wirklich loeschen?'
 options:
   windowTitle: 'Launcher Optionen'
   forceUpdateFalse: 'Repariere Installation'
@@ -42,6 +44,8 @@ updater:
   extracting: "Entpacke"
   extractTo: "nach"
 global:
+  success: 'Erfolgreich'
+  fail: 'Nicht Erfolgreich'
   yesStr: 'Ja'
   noStr: 'Nein'
   cancel: 'Abbruch'

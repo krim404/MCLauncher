@@ -33,7 +33,7 @@ public class UpdaterWorker
         {
         	System.out.println("Update Delete: "+delete);
         	File dest = new File(api.getMinecraftDirectory(), delete);
-        	deleteDir(dest);
+        	api.deleteDir(dest);
         }
         
         // Downloading packages
@@ -122,21 +122,6 @@ public class UpdaterWorker
         {
             e.printStackTrace();
         }
-    }
-    
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i=0; i<children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
     }
     
     public static class GameFile

@@ -11,6 +11,8 @@ news:
   defaultText: 'Loading...'
 game:
   windowTitle: 'Game options'
+  addgame: 'Please enter the name of the game'
+  delete: 'Do you really want to delete this game'
 options:
   windowTitle: 'Launcher options'
   forceUpdateFalse: 'Force repair'
@@ -42,6 +44,8 @@ updater:
   extracting: "Extracting"
   extractTo: "to"
 global:
+  success: 'Success'
+  fail: 'Failure'
   yesStr: 'Yes'
   noStr: 'No'
   cancel: 'Cancel'
