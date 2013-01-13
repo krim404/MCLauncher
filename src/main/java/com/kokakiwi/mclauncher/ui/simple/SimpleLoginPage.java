@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -28,6 +30,8 @@ import com.kokakiwi.mclauncher.ui.simple.components.TransparentButton;
 import com.kokakiwi.mclauncher.ui.simple.components.TransparentCheckbox;
 import com.kokakiwi.mclauncher.ui.simple.components.TransparentLabel;
 import com.kokakiwi.mclauncher.ui.simple.components.TransparentPanel;
+import com.kokakiwi.mclauncher.utils.Configuration;
+import com.kokakiwi.mclauncher.utils.SwitchGame;
 import com.kokakiwi.mclauncher.utils.lang.Translater;
 
 public class SimpleLoginPage implements Page
@@ -128,6 +132,14 @@ public class SimpleLoginPage implements Page
         	lp = new LogoPanel("/res/no_image.png");
         titles.add(lp,"West");
         titles.add(mode, "West");
+        
+        for(Entry<String, Configuration> l : api.getConfigList().getConfigs().entrySet())
+        {
+        	mode.addItem(l.getKey());
+        }
+        
+        mode.addActionListener(new SwitchGame(this,api));
+        
         panel.add(titles,"West");
         panel.add(statusText, "Center");
         

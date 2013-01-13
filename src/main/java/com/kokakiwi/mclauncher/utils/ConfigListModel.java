@@ -13,9 +13,7 @@ public class ConfigListModel implements ListModel
     {
     	this.c = api.getConfigList();
     }
-    
 
-    
     public Object getElementAt(int index)
     {
         return c.getConfigs().keySet().toArray()[index];
@@ -35,5 +33,4 @@ public class ConfigListModel implements ListModel
 	{
 		
 	}
-    
 }

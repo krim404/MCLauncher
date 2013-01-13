@@ -57,7 +57,7 @@ public class MCLauncher
     
     private void init(String[] args)
     {
-        config = Configuration.getLauncherConfiguration();
+        this.setConfig(Configuration.getLauncherConfiguration());
         Translater.setLang(config.getString("window.lang"));
         
         timeLine = new TimeLine(this);
@@ -79,15 +79,22 @@ public class MCLauncher
         parseArguments(args);
     }
     
+    public void setConfig(Configuration c)
+    {
+    	this.config = c;
+    }
+    
     public void reload()
     {
-    	frame.setVisible(false);
+    	Translater.setLang(config.getString("window.lang"));
     	timeLine = new TimeLine(this);
         loginer = new Loginer(this);
         updater = new Updater(this);
         launcher = new Launcher(this);
         
         api = new LauncherAPI(this);
+        cl = new ConfigList(api);
+        
         frame = new LauncherFrame(this);
         
         loadTheme();
