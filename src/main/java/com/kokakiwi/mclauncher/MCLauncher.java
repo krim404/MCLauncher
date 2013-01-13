@@ -64,6 +64,39 @@ public class MCLauncher
         api = new LauncherAPI(this); 
         cl = new ConfigList(api);
         
+
+        //Try loading mod-list
+        
+        File path = null;
+		try 
+		{
+			String[] pathes = System.getProperty("java.class.path").split(":");
+			for(String pth : pathes)
+			{
+				path = new File(pth);
+				if(!path.isDirectory())
+					path = path.getParentFile();
+				
+				if(path != null)
+		        {
+		        	File modlist = new File(path,"list.txt");
+		        	if(modlist.exists())
+		        	{
+		        		String list = api.readFile(modlist);
+		        		String[] gms = list.split(",");
+		        		for(String gm : gms)
+		        		{
+		        			if(cl.getConfig(gm) == null)
+		        				cl.registerConfig(gm);
+		        		}
+		        	}
+		        }
+			}
+			
+		} catch (Exception e) { System.out.println(e); }
+		
+        
+        //Load last selected mod
         String last = "Default";
         File f = new File(api.getLauncherDirectory().toString()+"/last");
         if(!f.exists())

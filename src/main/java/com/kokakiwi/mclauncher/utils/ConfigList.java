@@ -152,7 +152,7 @@ public class ConfigList
             final File profileDir = new File(profilesDir, dir);
             if (profileDir.isDirectory())
             {
-            	MCLogger.debug("Load profile with ID '" + dir + "'");
+            	MCLogger.debug("Found profile with ID '" + dir + "'");
                 final File descriptorFile = new File(profileDir, "profile.yml");
                 if (descriptorFile.exists())
                 {
