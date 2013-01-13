@@ -14,6 +14,7 @@ import com.kokakiwi.mclauncher.core.Updater;
 import com.kokakiwi.mclauncher.core.launcher.LauncherApplet;
 import com.kokakiwi.mclauncher.ui.LauncherFrame;
 import com.kokakiwi.mclauncher.ui.simple.SimpleTheme;
+import com.kokakiwi.mclauncher.utils.ConfigList;
 import com.kokakiwi.mclauncher.utils.Configuration;
 import com.kokakiwi.mclauncher.utils.MCLogger;
 import com.kokakiwi.mclauncher.utils.lang.Translater;
@@ -22,6 +23,7 @@ public class MCLauncher
 {
     // Components
     private Configuration config;
+    public ConfigList cl;
     private LauncherAPI   api;
     private LauncherFrame frame;
     
@@ -64,6 +66,8 @@ public class MCLauncher
         launcher = new Launcher(this);
         
         api = new LauncherAPI(this);
+        
+        cl = new ConfigList(api);
         frame = new LauncherFrame(this);
         
         loadTheme();

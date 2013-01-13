@@ -6,6 +6,8 @@ window:
 news:
   url: 'http://mcupdate.tumblr.com/'                                                            # URL de la page des news (Si utilise)
 game:
+  id: brautec
+  icon: 'http://update.brautec.de/images/brautec.png'
   folder:
     customFolder: false                                                                         # Utiliser le gameDir a la place du dossier user
     gameDir: 'mcp_data'                                                                         # Dossier contenant le dossier du jeu (folderName)

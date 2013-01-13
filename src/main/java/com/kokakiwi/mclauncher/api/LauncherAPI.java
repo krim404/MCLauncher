@@ -24,6 +24,7 @@ import com.kokakiwi.mclauncher.core.Loginer;
 import com.kokakiwi.mclauncher.core.TimeLine;
 import com.kokakiwi.mclauncher.core.Updater;
 import com.kokakiwi.mclauncher.ui.LauncherFrame;
+import com.kokakiwi.mclauncher.utils.ConfigList;
 import com.kokakiwi.mclauncher.utils.Configuration;
 import com.kokakiwi.mclauncher.utils.SystemUtils;
 
@@ -332,4 +333,9 @@ public class LauncherAPI
         
         return result;
     }
+
+	public ConfigList getConfigList() 
+	{
+		return main.cl;
+	}
 }

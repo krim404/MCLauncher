@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -112,7 +113,19 @@ public class SimpleLoginPage implements Page
         panel.setPreferredSize(new Dimension(100, 100));
         
         final TransparentPanel titles = new TransparentPanel();
-        lp = new LogoPanel("/res/no_image.png");
+        String imgLocation = api.getConfig().getString("game.icon");
+        if(imgLocation != null && imgLocation.length() > 5)
+        {
+        	try
+        	{
+        		lp = new LogoPanel(new URL(imgLocation));
+        	} catch(Exception e)
+        	{
+        		lp = new LogoPanel("/res/no_image.png");
+        	}
+        }
+        else
+        	lp = new LogoPanel("/res/no_image.png");
         titles.add(lp,"West");
         titles.add(mode, "West");
         panel.add(titles,"West");
