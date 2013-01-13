@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -36,7 +39,6 @@ public class ConfigList
 		this.reloadConfigs();
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void updateConfigs()
 	{
 		final File profilesDir = new File(profilesParentDir + "profiles/");
@@ -101,10 +103,24 @@ public class ConfigList
 	}
 	
 	//Abfrage gegen Master nach ID, anlegen des Ordners und speichern der Config File. Danach reload
-	public boolean registerConfig(String id)
+	public void registerConfig(String id)
 	{
-		//TODO
-		return true;
+		final File path = new File(profilesParentDir
+                + "profiles/"+id);
+		final File file = new File(profilesParentDir
+                + "profiles/"+id+"/profile.yml");
+		final File version = new File(profilesParentDir
+                + "profiles/"+id+"/version");
+		path.mkdirs();
+		
+		try {
+			String yml = executePost("http://update.brautec.de/profiles.php?dl=true&game="+id, "", "",true).replaceAll("[^\\x00-\\x7F]", "");
+			String v = executePost("http://update.brautec.de/profiles.php?game="+id, "", "",false);
+			this.writeFile(version,v);
+	        this.writeFile(file,yml);
+		} catch (Exception e) {
+			MCLogger.debug("Unable to save profile file: "+id);
+		}
 	}
 	
 	public int getLocalVersion(String game)
@@ -117,10 +133,10 @@ public class ConfigList
     	{
 	    	if(versionFile.exists())
 	    	{
-				curVersion = Integer.parseInt(readVersion(versionFile));
+	    		curVersion = readVersion(versionFile);
 	    	} 
     	} catch (Exception e) {
-
+    		System.out.println(e);
 		}
     	
     	return curVersion;
@@ -132,7 +148,7 @@ public class ConfigList
     	int ProfileVersion = 0;
     	
     	try {
-    		ProfileVersion = Integer.parseInt(executePost("http://update.brautec.de/profiles.php?game="+game, "", ""));
+    		ProfileVersion = Integer.parseInt(executePost("http://update.brautec.de/profiles.php?game="+game, "", "",false));
     	} catch (Exception e) {
     		MCLogger.debug("Error on Request of: "+"http://update.brautec.de/profiles.php?game="+game);
     		this.noask = true;
@@ -157,7 +173,15 @@ public class ConfigList
                 final File descriptorFile = new File(profileDir, "profile.yml");
                 if (descriptorFile.exists())
                 {
-                    this.loadConfig(descriptorFile);
+                    if(!this.loadConfig(descriptorFile))
+                    {
+                    	this.registerConfig(dir);
+                    	this.loadConfig(descriptorFile);
+                    }
+                } else
+                {
+                	this.registerConfig(dir);
+                	this.loadConfig(descriptorFile);
                 }
             }
         }
@@ -185,7 +209,7 @@ public class ConfigList
 	}
 	
 	public static String executePost(String targetURL, String urlParameters,
-            String keyFileName)
+            String keyFileName,boolean multiline)
     {
         final String protocol = targetURL.substring(4);
         HttpURLConnection connection = null;
@@ -254,6 +278,9 @@ public class ConfigList
             while ((line = rd.readLine()) != null)
             {
                 response.append(line);
+                if(multiline == true)
+                	response.append("\r\n");
+                	
             }
             rd.close();
             
@@ -279,16 +306,23 @@ public class ConfigList
         return SimpleTheme.class.getResourceAsStream("/"+url);
     }
 	
-    public String readVersion(File file) throws Exception
+    public Integer readVersion(File file) throws Exception
     {
-        final DataInputStream dis = new DataInputStream(new FileInputStream(
-                file));
-        final String mod = dis.readUTF();
-        dis.close();
-        return mod;
+    	String str = "0";
+		FileInputStream stream = new FileInputStream(file);
+		try {
+		  FileChannel fc = stream.getChannel();
+		  MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+		  str = Charset.defaultCharset().decode(bb).toString();
+		}
+		finally {
+		  stream.close();
+		}
+		
+        return Integer.parseInt(str);
     }
     
-    public void writeVersion(File file, String version) throws Exception
+    public void writeFile(File file, String text) throws Exception
     {
         if (!file.exists())
         {
@@ -296,7 +330,7 @@ public class ConfigList
         }
         final DataOutputStream dos = new DataOutputStream(new FileOutputStream(
                 file));
-        dos.writeUTF(version);
+        dos.write(text.getBytes());
         dos.close();
     }
 }

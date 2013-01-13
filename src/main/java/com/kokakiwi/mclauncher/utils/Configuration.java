@@ -26,26 +26,34 @@ public class Configuration
     
     public boolean load(File file, boolean overwrite)
     {
-        final String ext = file.getName().substring(
-                file.getName().lastIndexOf(".") + 1);
-        String type;
-        if (ext.equals("yml"))
-        {
-            type = "yaml";
-        }
-        else
-        {
-            type = "";
-        }
-        try
-        {
-            return load(new FileInputStream(file), type);
-        }
-        catch (final FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
+    	try
+    	{
+	        final String ext = file.getName().substring(
+	                file.getName().lastIndexOf(".") + 1);
+	        String type;
+	        if (ext.equals("yml"))
+	        {
+	            type = "yaml";
+	        }
+	        else
+	        {
+	            type = "";
+	        }
+	        
+	        try
+	        {
+	            return load(new FileInputStream(file), type);
+	        }
+	        catch (final FileNotFoundException e)
+	        {
+	            
+	        }
+	        return false;
+    	} catch (Exception e)
+    	{
+    		MCLogger.debug("Unable to parse config file: "+file);
+    		return false;
+    	}
     }
     
     public boolean load(InputStream inputStream)
