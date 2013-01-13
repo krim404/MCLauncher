@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JCheckBox;

@@ -20,8 +20,12 @@ public class SwitchGame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		this.a.getMain().setConfig(this.a.getConfigList().getConfig((String)this.p.mode.getSelectedItem()));
-		this.a.getMain().reload();
+		Configuration g = this.a.getConfigList().getConfig((String)this.p.mode.getSelectedItem());
+		if(g != null)
+		{
+			this.a.getMain().setConfig(g);
+			this.a.getMain().reload();
+		} else MCLogger.debug("Unable to switch game to: "+this.p.mode.getSelectedItem());
 	}
 
 }
