@@ -24,6 +24,7 @@ public class SwitchGame implements ActionListener
 		if(g != null)
 		{
 			this.a.getMain().setConfig(g);
+			this.a.getMain().setLastMod(g.getString("game.id"));
 			this.a.getMain().reload();
 		} else MCLogger.debug("Unable to switch game to: "+this.p.mode.getSelectedItem());
 	}

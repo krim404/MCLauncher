@@ -1,5 +1,6 @@
 package com.kokakiwi.mclauncher;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
@@ -60,25 +61,46 @@ public class MCLauncher
         this.setConfig(Configuration.getLauncherConfiguration());
         Translater.setLang(config.getString("window.lang"));
         
-        timeLine = new TimeLine(this);
-        loginer = new Loginer(this);
-        updater = new Updater(this);
-        launcher = new Launcher(this);
-        
-        api = new LauncherAPI(this);
-        
+        api = new LauncherAPI(this); 
         cl = new ConfigList(api);
-        frame = new LauncherFrame(this);
         
-        loadTheme();
+        String last = "Default";
+        File f = new File(api.getLauncherDirectory().toString()+"/last");
+        if(!f.exists())
+        {
+        	try 
+        	{
+        		this.setLastMod("Default");
+				api.writeFile(f, "Default");
+				last = api.readFile(f);
+			} catch (Exception e) {
+				MCLogger.debug("Unable to load last mod file");
+			}
+        }
         
-        timeLine.init();
-        frame.init();
-        loginer.init();
-        
+        Configuration c = cl.getConfig(last);
+		if(c != null)
+			this.setConfig(c);
+		
+        this.reload();
         parseArguments(args);
     }
     
+    public void setLastMod(String s)
+    {
+    	File f = new File(api.getLauncherDirectory().toString()+"/last");
+    	if(!f.exists())
+        {
+    		try 
+        	{
+		    	f.createNewFile();
+				api.writeFile(f, s);
+        	} catch (Exception e) {
+				MCLogger.debug("Unable to create last mod file");
+			}
+        }
+    }
+
     public void setConfig(Configuration c)
     {
     	this.config = c;
