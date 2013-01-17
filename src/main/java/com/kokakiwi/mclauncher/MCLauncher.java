@@ -110,6 +110,7 @@ public class MCLauncher
 		} catch (Exception e) {
 			MCLogger.debug("Unable to load last mod file");
 		}
+    	
         Configuration c = cl.getConfig(last);
 		if(c != null)
 			this.setConfig(c);
@@ -151,6 +152,8 @@ public class MCLauncher
         if(cl != null)
         	cl.reloadConfigs(true);
         
+        loginer.init();
+        
         if(frame == null)
         {
         	frame = new LauncherFrame(this);
@@ -161,7 +164,7 @@ public class MCLauncher
         	timeLine.reload();
         }
          
-        loginer.init();
+        
     }
     
     @SuppressWarnings("unchecked")
