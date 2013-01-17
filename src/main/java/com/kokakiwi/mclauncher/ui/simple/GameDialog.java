@@ -101,7 +101,9 @@ public class GameDialog extends JDialog
                 		JOptionPane.showMessageDialog(panel,Translater.getString("global.success"));
                 	} else
                 		JOptionPane.showMessageDialog(panel,Translater.getString("global.fail"));
+                	
                 	api.getMain().reload();
+                	refreshList();
                 }
             }
         });
@@ -119,8 +121,8 @@ public class GameDialog extends JDialog
             				JOptionPane.showMessageDialog(panel,Translater.getString("global.success"));
             			else
             				JOptionPane.showMessageDialog(panel,Translater.getString("global.fail"));
-            			
             			api.getMain().reload();
+            			refreshList();
             		}
             	}
             }
