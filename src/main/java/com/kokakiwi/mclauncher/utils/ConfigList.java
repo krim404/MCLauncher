@@ -29,6 +29,7 @@ public class ConfigList
 		if(!profilesDir.exists())
 		{
 			profilesDir.mkdirs();
+			this.registerConfig("brautec2");
 		}
 		
         final String[] profDir = profilesDir.list();
