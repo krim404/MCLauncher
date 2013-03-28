@@ -3,6 +3,7 @@ package com.kokakiwi.mclauncher.ui.simple.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
@@ -13,6 +14,7 @@ import javax.swing.event.HyperlinkListener;
 
 import com.kokakiwi.mclauncher.api.LauncherAPI;
 import com.kokakiwi.mclauncher.utils.lang.Translater;
+
 
 public class NavigatorPanel extends TexturedPanel
 {
@@ -38,18 +40,11 @@ public class NavigatorPanel extends TexturedPanel
                         + "</center></font></body></html>");
         editorPane.addHyperlinkListener(new HyperlinkListener() {
             
-            public void hyperlinkUpdate(HyperlinkEvent he)
+        	public void hyperlinkUpdate(HyperlinkEvent he)
             {
                 if (he.getEventType() == EventType.ACTIVATED)
                 {
-                    try
-                    {
-                        editorPane.setPage(he.getURL());
-                    }
-                    catch (final IOException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    openUrl(he.getURL().toString());
                 }
             }
         });
@@ -66,6 +61,45 @@ public class NavigatorPanel extends TexturedPanel
         final Thread t = new Thread(new BrowserLoader());
         t.setDaemon(true);
         t.start();
+    }
+    
+    public static void openUrl(String url)
+    {
+    	String os = System.getProperty("os.name");
+    	Runtime runtime=Runtime.getRuntime();
+    	try
+    	{
+	    	// Block for Windows Platform
+	    	if (os.startsWith("Windows"))
+	    	{
+	    		String cmd = "rundll32 url.dll,FileProtocolHandler "+ url;
+	    		runtime.exec(cmd);
+	    	}
+	    	//Block for Mac OS
+	    	else if(os.startsWith("Mac OS")){
+	    		@SuppressWarnings("rawtypes")
+				Class fileMgr = Class.forName("com.apple.eio.FileManager");
+	    		@SuppressWarnings("unchecked")
+				Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
+	    		openURL.invoke(null, new Object[] {url});
+	    	}
+	    	//Block for UNIX Platform 
+	    	else {
+	    		String[] browsers = {"firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
+	    		String browser = null;
+	    		for (int count = 0; count < browsers.length && browser == null; count++)
+	    			if (runtime.exec(new String[] {"which", browsers[count]}).waitFor() == 0)
+	    				browser = browsers[count];
+	    		if (browser == null)
+	    			throw new Exception("Could not find web browser");
+	    		else 
+	    			runtime.exec(new String[] {browser, url});
+	    	}
+    	} catch(Exception x)
+    	{
+	    	System.err.println("Exception occurd while invoking Browser!");
+	    	x.printStackTrace();
+    	}
     }
     
     public LauncherAPI getApi()
