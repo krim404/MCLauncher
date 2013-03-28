@@ -298,15 +298,17 @@ public class MCLauncher
         return instance;
     }
     
-    public final static long MIN_HEAP         = 511;
+    public final static long MIN_HEAP         = 800;
     
-    public final static long RECOMMENDED_HEAP = 1024;
+    public final static long RECOMMENDED_HEAP = 1500;
     
     public static void main(String[] args)
     {
         final float heapSizeMegs = Runtime.getRuntime().maxMemory() / 1024L / 1024L;
+        System.out.println("Starting with "+heapSizeMegs+" MB Ram");
+        
         boolean start = false;
-        if (heapSizeMegs > MIN_HEAP || !start)
+        if (heapSizeMegs > MIN_HEAP)
         {
             start = true;
         }
@@ -317,7 +319,12 @@ public class MCLauncher
                 final String pathToJar = MCLauncher.class.getProtectionDomain()
                         .getCodeSource().getLocation().toURI().getPath();
                 
-                final ArrayList<String> params = new ArrayList<String>();
+                if(pathToJar == null)
+                	throw new Exception("!");
+                
+                System.out.println("Determining Classpath: "+pathToJar);
+                
+                ArrayList<String> params = new ArrayList<String>();
                 
                 params.add("javaw");
                 params.add("-Xmx" + Long.toString(RECOMMENDED_HEAP) + "m");
@@ -333,13 +340,48 @@ public class MCLauncher
                 final Process process = pb.start();
                 if (process == null)
                 {
-                    throw new Exception("!");
+                    	throw new Exception("!");
                 }
                 System.exit(0);
             }
             catch (final Exception e)
             {
-                e.printStackTrace();
+                System.out.println("Unable to increase RAM! Trying again");
+                start = true;
+            }
+            
+            try
+            {
+                final String pathToJar = MCLauncher.class.getProtectionDomain()
+                        .getCodeSource().getLocation().toURI().getPath();
+                
+                if(pathToJar == null)
+                	throw new Exception("!");
+                
+                ArrayList<String> params = new ArrayList<String>();
+                
+                params.add("java");
+                params.add("-Xmx" + Long.toString(RECOMMENDED_HEAP) + "m");
+                params.add("-Dsun.java2d.noddraw=true");
+                params.add("-Dsun.java2d.d3d=false");
+                params.add("-Dsun.java2d.opengl=false");
+                params.add("-Dsun.java2d.pmoffscreen=false");
+                
+                params.add("-classpath");
+                params.add(pathToJar);
+                params.add("com.kokakiwi.mclauncher.MCLauncher");
+                final ProcessBuilder pb = new ProcessBuilder(params);
+                final Process process = pb.start();
+                if (process == null)
+                {
+                    	throw new Exception("!");
+                }
+                System.exit(0);
+            }
+            catch (final Exception e)
+            {
+                System.out.println("Unable to increase RAM #2!");
+                System.out.println("This can result in heavy lags or crashing of the client!");
                 start = true;
             }
         }

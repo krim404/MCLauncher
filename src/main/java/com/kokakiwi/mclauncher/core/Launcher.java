@@ -60,7 +60,12 @@ public class Launcher implements Runnable
                 natives.getAbsolutePath());
         
         // Start Minecraft
+        System.out.println("Loading Minecraft Files");
         classLoader = new URLClassLoader(urls.toArray(new URL[0]));
+        for(URL u: classLoader.getURLs())
+        {
+        	System.out.println("Loaded: "+u.toString());
+        }
         
         applet = new LauncherApplet(main.getApi());
         

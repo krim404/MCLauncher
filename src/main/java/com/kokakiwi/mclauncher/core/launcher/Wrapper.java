@@ -22,6 +22,7 @@ public class Wrapper
     
     public static void doChanges(LauncherAPI api, Class<?> clazz)
     {
+    	
         try
         {
             final Class<?> c = api.getLauncher().getClassLoader()
@@ -52,5 +53,6 @@ public class Wrapper
         {
             
         }
+        
     }
 }
