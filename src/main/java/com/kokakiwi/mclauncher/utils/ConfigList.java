@@ -148,7 +148,7 @@ public class ConfigList
 	
 	public int getVersion(String game)
 	{
-		if(this.noask == true) return 1;
+		//if(this.noask == true) return 1;
     	int ProfileVersion = 0;
     	
     	try {
