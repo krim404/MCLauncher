@@ -25,7 +25,6 @@ public class ConfigList
 	public void updateConfigs()
 	{
 		final File profilesDir = new File(profilesParentDir + "profiles/");
-		System.out.println(profilesDir.toString());
 		if(!profilesDir.exists())
 		{
 			profilesDir.mkdirs();
@@ -106,14 +105,15 @@ public class ConfigList
 			String v = api.executePost("http://update.brautec.de/profiles.php?game="+id, "", "",false);
 			if(v.length() > 0 && yml.length() > 10)
 			{
+				api.writeFile(file,yml);
 				api.writeFile(version,v);
-		        api.writeFile(file,yml);
 		        return true;
 			} else
 			{
 				//nix
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			MCLogger.debug("Unable to save profile file: "+id);
 		}
 		return false;

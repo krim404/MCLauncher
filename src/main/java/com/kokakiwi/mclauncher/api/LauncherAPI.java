@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.MappedByteBuffer;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.security.PublicKey;
@@ -398,13 +398,15 @@ public class LauncherAPI
 		FileInputStream stream = new FileInputStream(file);
 		try {
 		  FileChannel fc = stream.getChannel();
-		  MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+		  ByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 		  str = Charset.defaultCharset().decode(bb).toString();
 		}
 		finally {
 		  stream.close();
 		}
 		
+        System.gc(); //Anti Java Bug
+        
         return str;
     }
 	
