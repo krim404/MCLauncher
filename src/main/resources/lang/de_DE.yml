@@ -33,7 +33,7 @@ updater:
     INIT: 'Initialisiere Loader'
     DETERMINING_PACKAGES: 'Suche Pakete zum Downloaden'
     CHECKING_CACHE: 'Pruefe existierende Daten'
-    DOWNLOADING: 'Lage Pakete herunter'
+    DOWNLOADING: 'Lade Pakete herunter'
     EXTRACTING_PACKAGES: 'Extrahiere'
     UPDATING_CLASSPATH: 'Aktualisiere Klassenpfad'
     SWITCHING_APPLET: 'Wechsel Applet'
