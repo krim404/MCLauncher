@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="/Users/krim/Dropbox/Shares/BdH Mod/eclipse_old/snakeyaml-1.10.jar"/>
+	<classpathentry kind="lib" path="/Users/krim/Documents/fml/BukkitForge/lib/snakeyaml-1.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
